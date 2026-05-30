@@ -7,7 +7,7 @@ import { Temporal } from "temporal-polyfill"
 import { UsageError } from "./api"
 import type { FetchUsageFn, RenderErrorFn, RenderStatusFn, Theme } from "./types"
 
-/** Build the default Z.ai-style error renderer for a given label */
+/** Build the default error renderer for a given label */
 function defaultRenderError(label: string): RenderErrorFn {
   return (error: unknown, theme: Theme): string => {
     const code = error instanceof UsageError ? error.code : "fetch"
@@ -29,7 +29,7 @@ export class UsageCache<TData> {
     renderError: RenderErrorFn | undefined,
     private readonly cooldownMs = 30_000,
   ) {
-    // Default to Z.ai-style error rendering
+    // Use default error rendering
     this.renderError = renderError ?? defaultRenderError(label)
   }
 
@@ -50,7 +50,7 @@ export class UsageCache<TData> {
 
       ctx.ui.setStatus(this.statusKey, this.renderStatus(data, ctx.ui.theme))
     } catch (error) {
-      // Z.ai approach: no console.error, show error code in footer
+      // Show error code in footer (no console.error)
       const rendered = this.renderError(error, ctx.ui.theme)
       ctx.ui.setStatus(this.statusKey, rendered) // undefined → clears
     }

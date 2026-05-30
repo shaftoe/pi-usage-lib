@@ -27,9 +27,9 @@ function isCurrentProvider(ctx: ExtensionContext, prefix: string): boolean {
  * @example
  * ```ts
  * export default createUsageExtension({
- *   providerPrefix: "zai",
- *   statusKey: "zai-usage",
- *   label: "Z.ai",
+ *   providerPrefix: "myprovider",
+ *   statusKey: "myprovider-usage",
+ *   label: "MyProvider",
  *   fetchUsage: async (registry) => { ... },
  *   renderStatus: (data, theme) => { ... },
  * })
