@@ -2,7 +2,7 @@
 
 Shared library for building [Pi coding agent](https://pi.dev/) usage-monitoring extensions.
 
-It absorbs all the boilerplate that every `*-usage` extension needs — Pi event registration, provider matching, API fetching with sandbox-aware auth, response caching, error handling, and themed footer rendering — so that each extension reduces to a single config object with two callbacks.
+It absorbs all the boilerplate that most `*-usage` extension needs — Pi event registration, provider matching, API fetching with sandbox-aware auth, response caching, error handling, and themed footer rendering — so that each extension reduces to a single config object with two callbacks.
 
 ## What's Included
 
@@ -123,4 +123,4 @@ formatTimeRemainingFromEpochMs(Date.now() + 3665000)  // "1h 1m 5s"
 
 ## License
 
-MIT
+See [LICENSE](./LICENSE)
