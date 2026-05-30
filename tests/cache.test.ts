@@ -128,7 +128,7 @@ describe("UsageCache", () => {
     })
   })
 
-  describe("error handling — default (Z.ai-style)", () => {
+  describe("error handling — default", () => {
     it("should show <err:fetch> on generic error", async () => {
       const ctx = createMockContext()
       const fetchFn = createThrowingFetch(new Error("network down"))

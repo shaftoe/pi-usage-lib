@@ -27,7 +27,7 @@ export interface UsageExtensionConfig<TData> {
   /** Status key for ctx.ui.setStatus() (e.g. "zai-usage") */
   statusKey: string
 
-  /** Display label for footer prefix (e.g. "Z.ai") */
+  /** Display label for footer prefix (e.g. "MyProvider") */
   label: string
 
   /** Cache cooldown in ms (default: 30_000) */
@@ -41,7 +41,7 @@ export interface UsageExtensionConfig<TData> {
 
   /**
    * Render an error into a themed footer string.
-   * Default: Z.ai-style — shows themed `<err:code>` using UsageError.code,
+   * Default: shows themed `<err:code>` using UsageError.code,
    * falling back to "fetch" for unknown errors.
    * Return undefined to clear the footer instead.
    */

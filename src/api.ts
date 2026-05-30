@@ -1,7 +1,6 @@
 /**
  * pi-usage-lib — API utilities
  * Sandbox-aware auth, safe fetch, structured errors.
- * Extracted from the Z.ai extension (most battle-tested).
  */
 
 import type { ModelRegistry } from "@earendil-works/pi-coding-agent"
@@ -24,7 +23,7 @@ export class UsageError extends Error {
 }
 
 /**
- * Build authenticated headers — Z.ai's 3-way sandbox-aware strategy:
+ * Build authenticated headers using a 3-way sandbox-aware strategy:
  *
  * 1. Real key present → send "Authorization: Bearer <key>"
  * 2. Key is "proxy-managed" sentinel → don't set auth (sandbox proxy handles it)

@@ -52,11 +52,11 @@ Creates a Pi extension function from a configuration object.
 interface UsageExtensionConfig<TData> {
   providerPrefix: string      // e.g. "zai", "deepseek"
   statusKey: string           // e.g. "zai-usage"
-  label: string               // e.g. "Z.ai"
+  label: string               // e.g. "MyProvider"
   cooldownMs?: number         // cache TTL (default: 30_000)
   fetchUsage: FetchUsageFn<TData>
   renderStatus: RenderStatusFn<TData>
-  renderError?: RenderErrorFn // optional, defaults to Z.ai-style <err:code>
+  renderError?: RenderErrorFn // optional, defaults to themed <err:code> display
 }
 ```
 
@@ -64,7 +64,7 @@ The returned function is a valid Pi extension — pass it as the default export 
 
 ### `buildAuthHeaders(modelRegistry, providerName, extra?)`
 
-Builds authenticated fetch headers using Z.ai's **3-way sandbox-aware** strategy:
+Builds authenticated fetch headers using a **3-way sandbox-aware** strategy:
 
 1. **Real key** → sends `Authorization: Bearer <key>`
 2. **`"proxy-managed"` sentinel** → skips auth header (Docker Sandbox proxy handles it)
@@ -102,7 +102,7 @@ The generic cache class used internally by `createUsageExtension`. Available for
 
 ### Error Display (Default Behavior)
 
-By default, errors are shown in the footer using the Z.ai pattern:
+By default, errors are shown in the footer using the following pattern:
 
 ```
 MyProvider:<err:http401>
