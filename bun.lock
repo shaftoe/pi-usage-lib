@@ -5,7 +5,6 @@
     "": {
       "name": "@alexanderfortin/pi-usage-lib",
       "dependencies": {
-        "@earendil-works/pi-coding-agent": "^0.79.6",
         "temporal-polyfill": "^0.3.2",
       },
       "devDependencies": {
@@ -21,6 +20,7 @@
         "typescript": "^6.0.3",
       },
       "peerDependencies": {
+        "@earendil-works/pi-coding-agent": "^0.79.6",
         "@earendil-works/pi-tui": "^0.79.6",
       },
     },
