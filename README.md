@@ -100,6 +100,56 @@ Used by `safeFetch`, `safeParseJson`, and the default error renderer. Extensions
 
 The generic cache class used internally by `createUsageExtension`. Available for advanced use cases where you need direct control over the cache lifecycle.
 
+## Color Thresholds (Configurable)
+
+The library highlights usage values with color when they approach or exceed limits:
+
+- **Percentage-based** (e.g. Z.ai usage): **warning** above 80%, **error** at 90%+
+- **Credit-based** (e.g. DeepSeek balance): **warning** below $2, **error** at $1 or less
+
+### Overriding thresholds via settings file
+
+You can override any or all of the default thresholds by creating a JSON file at `~/.pi/agent/usage-lib.json`:
+
+```json
+{
+  "thresholds": {
+    "percentage": { "warning": 70, "error": 85 },
+    "credit": { "warning": 5, "error": 2 }
+  }
+}
+```
+
+All keys are optional — only the ones you specify are overridden; the rest keep their defaults. Unknown keys and non-numeric values are silently ignored. The file is read once per session and cached.
+
+### Overriding thresholds programmatically
+
+The `colorForPercentage()` and `colorForCredit()` helpers accept an optional `thresholds` parameter:
+
+```ts
+import { colorForPercentage, type ColorThresholds } from "@alexanderfortin/pi-usage-lib"
+
+const custom: ColorThresholds = {
+  percentage: { warning: 60, error: 75 },
+  credit: { warning: 5, error: 1 },
+}
+
+// In your renderStatus callback:
+const color = colorForPercentage(data.percentage, theme, custom)
+```
+
+When no `thresholds` argument is passed, the functions fall back to the values loaded from the settings file (or the built-in defaults).
+
+### Color threshold API
+
+| Export | Description |
+|---|---|
+| `ColorThresholds` | Type describing the threshold structure |
+| `DEFAULT_COLOR_THRESHOLDS` | Built-in default thresholds |
+| `loadColorThresholds()` | Load & cache thresholds from the settings file |
+| `mergeThresholds(defaults, overrides)` | Merge partial overrides into defaults |
+| `getSettingsFilePath()` | Resolve the path to `~/.pi/agent/usage-lib.json` |
+
 ### Error Display (Default Behavior)
 
 By default, errors are shown in the footer using the following pattern:
