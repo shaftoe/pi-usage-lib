@@ -18,7 +18,7 @@ import type { ColorThresholds, Theme } from "./types"
  *
  * - accent (default) when percentage ≤ warning threshold
  * - **warning** (yellow) when percentage > warning threshold
- * - **error** (red) when percentage ≥ error threshold
+ * - **error** (red) when percentage ≥ critical threshold
  *
  * @param percentage - usage percentage (0–100)
  * @param theme - the Pi TUI theme
@@ -36,7 +36,7 @@ export function colorForPercentage(
   thresholds?: ColorThresholds,
 ): (text: string) => string {
   const t = thresholds ?? loadColorThresholds()
-  if (percentage >= t.percentage.error) return (s: string) => theme.fg("error", s)
+  if (percentage >= t.percentage.critical) return (s: string) => theme.fg("error", s)
   if (percentage > t.percentage.warning) return (s: string) => theme.fg("warning", s)
   return (s: string) => theme.fg("accent", s)
 }
@@ -46,7 +46,7 @@ export function colorForPercentage(
  *
  * - accent (default) when credit ≥ warning threshold
  * - **warning** (yellow) when credit < warning threshold
- * - **error** (red) when credit ≤ error threshold
+ * - **error** (red) when credit ≤ critical threshold
  *
  * @param credit - remaining credit / balance in USD
  * @param theme - the Pi TUI theme
@@ -64,7 +64,7 @@ export function colorForCredit(
   thresholds?: ColorThresholds,
 ): (text: string) => string {
   const t = thresholds ?? loadColorThresholds()
-  if (credit <= t.credit.error) return (s: string) => theme.fg("error", s)
+  if (credit <= t.credit.critical) return (s: string) => theme.fg("error", s)
   if (credit < t.credit.warning) return (s: string) => theme.fg("warning", s)
   return (s: string) => theme.fg("accent", s)
 }

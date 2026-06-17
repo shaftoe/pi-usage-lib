@@ -104,8 +104,8 @@ The generic cache class used internally by `createUsageExtension`. Available for
 
 The library highlights usage values with color when they approach or exceed limits:
 
-- **Percentage-based** (e.g. Z.ai usage): **warning** above 80%, **error** at 90%+
-- **Credit-based** (e.g. DeepSeek balance): **warning** below $2, **error** at $1 or less
+- **Percentage-based** (e.g. Z.ai usage): **warning** above 80%, **critical** at 90%+
+- **Credit-based** (e.g. DeepSeek balance): **warning** below $5, **critical** at $1 or less
 
 ### Overriding thresholds via settings file
 
@@ -114,8 +114,8 @@ You can override any or all of the default thresholds by creating a JSON file at
 ```json
 {
   "thresholds": {
-    "percentage": { "warning": 70, "error": 85 },
-    "credit": { "warning": 5, "error": 2 }
+    "percentage": { "warning": 70, "critical": 85 },
+    "credit": { "warning": 5, "critical": 2 }
   }
 }
 ```
@@ -130,8 +130,8 @@ The `colorForPercentage()` and `colorForCredit()` helpers accept an optional `th
 import { colorForPercentage, type ColorThresholds } from "@alexanderfortin/pi-usage-lib"
 
 const custom: ColorThresholds = {
-  percentage: { warning: 60, error: 75 },
-  credit: { warning: 5, error: 1 },
+  percentage: { warning: 60, critical: 75 },
+  credit: { warning: 5, critical: 1 },
 }
 
 // In your renderStatus callback:

@@ -25,8 +25,8 @@ afterEach(() => {
 describe("DEFAULT_COLOR_THRESHOLDS", () => {
   it("should match the documented defaults", () => {
     expect(DEFAULT_COLOR_THRESHOLDS).toEqual({
-      percentage: { warning: 80, error: 90 },
-      credit: { warning: 2, error: 1 },
+      percentage: { warning: 80, critical: 90 },
+      credit: { warning: 5, critical: 1 },
     })
   })
 })
@@ -57,41 +57,41 @@ describe("mergeThresholds", () => {
     })
     expect(result.percentage.warning).toBe(70)
     // Other values unchanged
-    expect(result.percentage.error).toBe(90)
-    expect(result.credit).toEqual({ warning: 2, error: 1 })
+    expect(result.percentage.critical).toBe(90)
+    expect(result.credit).toEqual({ warning: 5, critical: 1 })
   })
 
-  it("should override percentage.error", () => {
+  it("should override percentage.critical", () => {
     const result = mergeThresholds(DEFAULT_COLOR_THRESHOLDS, {
-      percentage: { error: 85 },
+      percentage: { critical: 85 },
     })
-    expect(result.percentage.error).toBe(85)
+    expect(result.percentage.critical).toBe(85)
     expect(result.percentage.warning).toBe(80)
   })
 
   it("should override credit thresholds", () => {
     const result = mergeThresholds(DEFAULT_COLOR_THRESHOLDS, {
-      credit: { warning: 5, error: 2 },
+      credit: { warning: 8, critical: 2 },
     })
-    expect(result.credit).toEqual({ warning: 5, error: 2 })
-    expect(result.percentage).toEqual({ warning: 80, error: 90 })
+    expect(result.credit).toEqual({ warning: 8, critical: 2 })
+    expect(result.percentage).toEqual({ warning: 80, critical: 90 })
   })
 
   it("should override all thresholds at once", () => {
     const result = mergeThresholds(DEFAULT_COLOR_THRESHOLDS, {
-      percentage: { warning: 70, error: 80 },
-      credit: { warning: 3, error: 0.5 },
+      percentage: { warning: 70, critical: 80 },
+      credit: { warning: 3, critical: 0.5 },
     })
     expect(result).toEqual({
-      percentage: { warning: 70, error: 80 },
-      credit: { warning: 3, error: 0.5 },
+      percentage: { warning: 70, critical: 80 },
+      credit: { warning: 3, critical: 0.5 },
     })
   })
 
   it("should ignore non-numeric values", () => {
     const result = mergeThresholds(DEFAULT_COLOR_THRESHOLDS, {
       percentage: { warning: "high" },
-      credit: { error: null },
+      credit: { critical: null },
     })
     expect(result).toEqual(DEFAULT_COLOR_THRESHOLDS)
   })
@@ -102,15 +102,15 @@ describe("mergeThresholds", () => {
       percentage: { warning: 75, bogus: true },
     })
     expect(result.percentage.warning).toBe(75)
-    expect(result.percentage.error).toBe(90)
-    expect(result.credit).toEqual({ warning: 2, error: 1 })
+    expect(result.percentage.critical).toBe(90)
+    expect(result.credit).toEqual({ warning: 5, critical: 1 })
   })
 
   it("should handle fractional thresholds", () => {
     const result = mergeThresholds(DEFAULT_COLOR_THRESHOLDS, {
-      credit: { error: 0.25 },
+      credit: { critical: 0.25 },
     })
-    expect(result.credit.error).toBe(0.25)
+    expect(result.credit.critical).toBe(0.25)
   })
 })
 
@@ -156,16 +156,16 @@ describe("loadColorThresholds — file loading", () => {
   it("should merge user thresholds from a valid settings file", () => {
     const settingsFileContent = JSON.stringify({
       thresholds: {
-        percentage: { warning: 70, error: 80 },
-        credit: { warning: 5, error: 2 },
+        percentage: { warning: 70, critical: 80 },
+        credit: { warning: 8, critical: 2 },
       },
     })
     const readSpy = spyOn(fs, "readFileSync").mockReturnValue(settingsFileContent)
 
     const result = loadColorThresholds()
     expect(result).toEqual({
-      percentage: { warning: 70, error: 80 },
-      credit: { warning: 5, error: 2 },
+      percentage: { warning: 70, critical: 80 },
+      credit: { warning: 8, critical: 2 },
     })
     readSpy.mockRestore()
   })
@@ -179,8 +179,8 @@ describe("loadColorThresholds — file loading", () => {
     const readSpy = spyOn(fs, "readFileSync").mockReturnValue(settingsFileContent)
 
     const result = loadColorThresholds()
-    expect(result.percentage).toEqual({ warning: 75, error: 90 })
-    expect(result.credit).toEqual({ warning: 2, error: 1 })
+    expect(result.percentage).toEqual({ warning: 75, critical: 90 })
+    expect(result.credit).toEqual({ warning: 5, critical: 1 })
     readSpy.mockRestore()
   })
 
@@ -197,14 +197,14 @@ describe("loadColorThresholds — file loading", () => {
     const settingsFileContent = JSON.stringify({
       thresholds: {
         percentage: { warning: "not-a-number" },
-        credit: { error: Infinity },
+        credit: { critical: Infinity },
       },
     })
     const readSpy = spyOn(fs, "readFileSync").mockReturnValue(settingsFileContent)
 
     const result = loadColorThresholds()
     expect(result.percentage.warning).toBe(80) // default preserved
-    expect(result.credit.error).toBe(1) // default preserved
+    expect(result.credit.critical).toBe(1) // default preserved
     readSpy.mockRestore()
   })
 })
@@ -213,7 +213,7 @@ describe("loadColorThresholds — file loading", () => {
 
 // Ensure the ColorThresholds type is structurally correct at compile time
 const _typeCheck: ColorThresholds = {
-  percentage: { warning: 1, error: 2 },
-  credit: { warning: 1, error: 2 },
+  percentage: { warning: 1, critical: 2 },
+  credit: { warning: 1, critical: 2 },
 }
 void _typeCheck

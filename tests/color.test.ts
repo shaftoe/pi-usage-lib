@@ -69,18 +69,18 @@ describe("colorForPercentage", () => {
 
   describe("with custom thresholds", () => {
     const custom: ColorThresholds = {
-      percentage: { warning: 60, error: 75 },
-      credit: { warning: 5, error: 1 },
+      percentage: { warning: 60, critical: 75 },
+      credit: { warning: 5, critical: 1 },
     }
 
     it("should use custom warning threshold", () => {
-      // 62 > 60 (custom warning) but < 75 (custom error)
+      // 62 > 60 (custom warning) but < 75 (custom critical)
       const color = colorForPercentage(62, mockTheme, custom)
       expect(color("62%")).toBe("warning:62%")
     })
 
-    it("should use custom error threshold", () => {
-      // exactly 75 → error
+    it("should use custom critical threshold", () => {
+      // exactly 75 → error color
       const color = colorForPercentage(75, mockTheme, custom)
       expect(color("75%")).toBe("error:75%")
     })
@@ -91,7 +91,7 @@ describe("colorForPercentage", () => {
     })
 
     it("should not affect colorForCredit thresholds", () => {
-      // 3 < 5 (custom credit warning) and > 1 (custom credit error)
+      // 3 < 5 (custom credit warning) and > 1 (custom credit critical)
       const color = colorForCredit(3, mockTheme, custom)
       expect(color("$3.00")).toBe("warning:$3.00")
     })
@@ -101,25 +101,25 @@ describe("colorForPercentage", () => {
 // --- colorForCredit ---
 
 describe("colorForCredit", () => {
-  it("should return accent for credit ≥ $2", () => {
+  it("should return accent for credit ≥ $5", () => {
     const colors = [
-      colorForCredit(2, mockTheme),
       colorForCredit(5, mockTheme),
+      colorForCredit(10, mockTheme),
       colorForCredit(100, mockTheme),
     ]
-    expect(colors.map((c) => c("$2.00"))).toEqual(["accent:$2.00", "accent:$2.00", "accent:$2.00"])
+    expect(colors.map((c) => c("$5.00"))).toEqual(["accent:$5.00", "accent:$5.00", "accent:$5.00"])
   })
 
-  it("should return warning for credit < $2 and > $1", () => {
+  it("should return warning for credit < $5 and > $1", () => {
     const colors = [
       colorForCredit(1.01, mockTheme),
-      colorForCredit(1.5, mockTheme),
-      colorForCredit(1.99, mockTheme),
+      colorForCredit(3, mockTheme),
+      colorForCredit(4.99, mockTheme),
     ]
-    expect(colors.map((c) => c("$1.50"))).toEqual([
-      "warning:$1.50",
-      "warning:$1.50",
-      "warning:$1.50",
+    expect(colors.map((c) => c("$3.00"))).toEqual([
+      "warning:$3.00",
+      "warning:$3.00",
+      "warning:$3.00",
     ])
   })
 
@@ -145,18 +145,18 @@ describe("colorForCredit", () => {
 
   describe("with custom thresholds", () => {
     const custom: ColorThresholds = {
-      percentage: { warning: 80, error: 90 },
-      credit: { warning: 10, error: 5 },
+      percentage: { warning: 80, critical: 90 },
+      credit: { warning: 10, critical: 5 },
     }
 
     it("should use custom warning threshold", () => {
-      // 7 < 10 (custom warning) and > 5 (custom error)
+      // 7 < 10 (custom warning) and > 5 (custom critical)
       const color = colorForCredit(7, mockTheme, custom)
       expect(color("$7.00")).toBe("warning:$7.00")
     })
 
-    it("should use custom error threshold", () => {
-      // exactly 5 → error
+    it("should use custom critical threshold", () => {
+      // exactly 5 → error color
       const color = colorForCredit(5, mockTheme, custom)
       expect(color("$5.00")).toBe("error:$5.00")
     })
@@ -167,7 +167,7 @@ describe("colorForCredit", () => {
     })
 
     it("should not affect colorForPercentage thresholds", () => {
-      // 85 > 80 (percentage warning) but < 90 (percentage error)
+      // 85 > 80 (percentage warning) but < 90 (percentage critical)
       const color = colorForPercentage(85, mockTheme, custom)
       expect(color("85%")).toBe("warning:85%")
     })

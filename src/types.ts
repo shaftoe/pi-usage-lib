@@ -19,15 +19,15 @@ export interface ColorThresholds {
   percentage: {
     /** Above this % → **warning** color (default: 80) */
     warning: number
-    /** At or above this % → **error** color (default: 90) */
-    error: number
+    /** At or above this % → **critical** color (default: 90) */
+    critical: number
   }
   /** Credit / monetary balance thresholds (in USD) */
   credit: {
-    /** Below this → **warning** color (default: 2) */
+    /** Below this → **warning** color (default: 5) */
     warning: number
-    /** At or below this → **error** color (default: 1) */
-    error: number
+    /** At or below this → **critical** color (default: 1) */
+    critical: number
   }
 }
 

@@ -16,8 +16,8 @@ import type { ColorThresholds } from "./types"
 
 /** Default color thresholds used when no user overrides are present. */
 export const DEFAULT_COLOR_THRESHOLDS: ColorThresholds = {
-  percentage: { warning: 80, error: 90 },
-  credit: { warning: 2, error: 1 },
+  percentage: { warning: 80, critical: 90 },
+  credit: { warning: 5, critical: 1 },
 } as const
 
 /** Filename for user-managed settings, relative to the home directory. */
@@ -42,11 +42,11 @@ export function mergeThresholds(defaults: ColorThresholds, overrides: unknown): 
   return {
     percentage: {
       warning: pickNumber(pct?.warning, defaults.percentage.warning),
-      error: pickNumber(pct?.error, defaults.percentage.error),
+      critical: pickNumber(pct?.critical, defaults.percentage.critical),
     },
     credit: {
       warning: pickNumber(credit?.warning, defaults.credit.warning),
-      error: pickNumber(credit?.error, defaults.credit.error),
+      critical: pickNumber(credit?.critical, defaults.credit.critical),
     },
   }
 }
@@ -71,8 +71,8 @@ let cachedThresholds: ColorThresholds | null = null
  * ```json
  * {
  *   "thresholds": {
- *     "percentage": { "warning": 75, "error": 85 },
- *     "credit":     { "warning": 3,  "error": 1.5 }
+ *     "percentage": { "warning": 75, "critical": 85 },
+ *     "credit":     { "warning": 3,  "critical": 1.5 }
  *   }
  * }
  * ```
