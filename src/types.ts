@@ -8,6 +8,29 @@ import type { ExtensionContext, ModelRegistry } from "@earendil-works/pi-coding-
 /** Theme helper — matches ctx.ui.theme */
 export type Theme = ExtensionContext["ui"]["theme"]
 
+/**
+ * Color thresholds for usage display.
+ *
+ * Users can override any subset of these values via the
+ * `~/.pi/agent/usage-lib.json` settings file.
+ */
+export interface ColorThresholds {
+  /** Percentage-based usage thresholds (0–100) */
+  percentage: {
+    /** Above this % → **warning** color (default: 80) */
+    warning: number
+    /** At or above this % → **critical** color (default: 90) */
+    critical: number
+  }
+  /** Credit / monetary balance thresholds (in USD) */
+  credit: {
+    /** Below this → **warning** color (default: 5) */
+    warning: number
+    /** At or below this → **critical** color (default: 1) */
+    critical: number
+  }
+}
+
 /** Fetch function signature */
 export type FetchUsageFn<TData> = (
   modelRegistry: Pick<ModelRegistry, "getApiKeyForProvider">,
