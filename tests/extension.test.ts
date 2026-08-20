@@ -305,6 +305,70 @@ describe("createUsageExtension", () => {
     })
   })
 
+  describe("in-flight fetch vs model_select clear race", () => {
+    it("should not repaint stale footer after model_select clears during an in-flight turn_end fetch", async () => {
+      let resolveFetch: (d: TestData) => void = () => {}
+      const fetchPromise = new Promise<TestData>((r) => {
+        resolveFetch = r
+      })
+      const fetchUsage = mock(() => fetchPromise)
+      const extension = createUsageExtension<TestData>({
+        providerPrefix: "testsvc",
+        statusKey: "testsvc-usage",
+        label: "TestSvc",
+        fetchUsage: fetchUsage as any,
+        renderStatus: defaultRender,
+      })
+      const pi = createMockPi()
+      extension(pi)
+
+      // turn_end on a matching provider starts a fetch and awaits it.
+      const ctx = createMockCtx("testsvc")
+      const turnPromise = pi.trigger("turn_end", {}, ctx)
+      // Yield so the handler reaches the await fetchUsage().
+      await Promise.resolve()
+      expect(fetchUsage).toHaveBeenCalledTimes(1)
+
+      // Switch to a non-matching provider mid-fetch → model_select clears.
+      await pi.trigger("model_select", { model: { provider: "openai" } }, ctx)
+      expect(ctx.ui.setStatus).toHaveBeenCalledWith("testsvc-usage", undefined)
+      ;(ctx.ui.setStatus as any).mockClear()
+
+      // The stale fetch resolves; it must NOT re-paint the cleared footer.
+      resolveFetch({ value: 42 })
+      await turnPromise
+      expect(ctx.ui.setStatus).not.toHaveBeenCalled()
+    })
+
+    it("should not repaint after session_shutdown clears during an in-flight fetch", async () => {
+      let resolveFetch: (d: TestData) => void = () => {}
+      const fetchPromise = new Promise<TestData>((r) => {
+        resolveFetch = r
+      })
+      const fetchUsage = mock(() => fetchPromise)
+      const extension = createUsageExtension<TestData>({
+        providerPrefix: "testsvc",
+        statusKey: "testsvc-usage",
+        label: "TestSvc",
+        fetchUsage: fetchUsage as any,
+        renderStatus: defaultRender,
+      })
+      const pi = createMockPi()
+      extension(pi)
+
+      const ctx = createMockCtx("testsvc")
+      const startPromise = pi.trigger("session_start", {}, ctx)
+      await Promise.resolve()
+
+      await pi.trigger("session_shutdown", {}, ctx)
+      ;(ctx.ui.setStatus as any).mockClear()
+
+      resolveFetch({ value: 42 })
+      await startPromise
+      expect(ctx.ui.setStatus).not.toHaveBeenCalled()
+    })
+  })
+
   describe("caching across events", () => {
     it("should reuse cached data across multiple events within cooldown", async () => {
       let fetchCount = 0

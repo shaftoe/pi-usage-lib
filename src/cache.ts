@@ -20,6 +20,16 @@ export class UsageCache<TData> {
   private lastData: TData | null = null
   private lastFetchTime = 0
   private readonly renderError: RenderErrorFn
+  /**
+   * Monotonic token bumped on every clear(). updateStatus() captures the value
+   * before its await; if the value changed by the time the fetch resolves, a
+   * clear() (model_select to a non-matching provider, or session_shutdown)
+   * ran during the fetch and the stale result must NOT be painted or cached.
+   *
+   * This fixes a race where a deferred post-await setStatus() call re-painted
+   * a stale footer on top of the clear that model_select had just issued.
+   */
+  private generation = 0
 
   constructor(
     private readonly statusKey: string,
@@ -35,6 +45,12 @@ export class UsageCache<TData> {
 
   /** Update footer status from API or cache */
   async updateStatus(ctx: ExtensionContext): Promise<void> {
+    // Capture the generation before any await. If a clear() runs while the fetch
+    // is in flight (model_select to a non-matching provider, or session_shutdown),
+    // generation bumps and this result is stale — drop it instead of re-painting
+    // over the clear. Hoisted out of try so the catch block can share it.
+    const generation = this.generation
+
     try {
       const now = Temporal.Now.instant().epochMilliseconds
 
@@ -45,11 +61,16 @@ export class UsageCache<TData> {
       }
 
       const data = await this.fetchUsage(ctx.modelRegistry)
+
+      if (generation !== this.generation) return
+
       this.lastData = data
       this.lastFetchTime = now
 
       ctx.ui.setStatus(this.statusKey, this.renderStatus(data, ctx.ui.theme))
     } catch (error) {
+      // A clear() during the in-flight fetch invalidates the error paint too.
+      if (generation !== this.generation) return
       // Show error code in footer (no console.error)
       const rendered = this.renderError(error, ctx.ui.theme)
       ctx.ui.setStatus(this.statusKey, rendered) // undefined → clears
@@ -58,6 +79,8 @@ export class UsageCache<TData> {
 
   /** Clear footer status */
   clear(ctx: ExtensionContext): void {
+    this.generation++
+    this.lastData = null
     ctx.ui.setStatus(this.statusKey, undefined)
   }
 }

@@ -230,6 +230,97 @@ describe("UsageCache", () => {
 
       expect(ctx.ui.setStatus).toHaveBeenCalledWith("test-usage", undefined)
     })
+
+    it("should invalidate cached data so a later update re-fetches", async () => {
+      const ctx = createMockContext()
+      const fetchFn = createMockFetch({ percentage: 50 })
+      const cache = createCache(fetchFn, undefined, 30_000)
+
+      await cache.updateStatus(ctx)
+      expect(fetchFn).toHaveBeenCalledTimes(1)
+
+      cache.clear(ctx)
+
+      // Within cooldown, but clear() nulled lastData → must re-fetch.
+      await cache.updateStatus(ctx)
+      expect(fetchFn).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  describe("in-flight fetch vs clear race", () => {
+    it("should not paint after clear() runs during an in-flight fetch", async () => {
+      const ctx = createMockContext()
+      let resolveFetch: (d: TestData) => void = () => {}
+      const fetchPromise = new Promise<TestData>((r) => {
+        resolveFetch = r
+      })
+      const fetchFn = mock(() => fetchPromise)
+      const cache = createCache(fetchFn)
+
+      // Start an updateStatus that awaits the fetch.
+      const updatePromise = cache.updateStatus(ctx)
+      // Yield so it reaches the await fetchUsage().
+      await Promise.resolve()
+      expect(fetchFn).toHaveBeenCalledTimes(1)
+
+      // Switch to a non-matching provider mid-fetch → clear() runs.
+      cache.clear(ctx)
+      expect(ctx.ui.setStatus).toHaveBeenCalledWith("test-usage", undefined)
+      ;(ctx.ui.setStatus as any).mockClear()
+
+      // Resolve the stale fetch.
+      resolveFetch({ percentage: 50 })
+      await updatePromise
+
+      // The in-flight update must NOT re-paint over the clear.
+      expect(ctx.ui.setStatus).not.toHaveBeenCalled()
+    })
+
+    it("should not cache data from a fetch that resolved after clear()", async () => {
+      const ctx = createMockContext()
+      let resolveFetch: (d: TestData) => void = () => {}
+      const fetchPromise = new Promise<TestData>((r) => {
+        resolveFetch = r
+      })
+      const fetchFn = mock(() => fetchPromise)
+      const cache = createCache(fetchFn)
+
+      const updatePromise = cache.updateStatus(ctx)
+      await Promise.resolve()
+      expect(fetchFn).toHaveBeenCalledTimes(1)
+
+      cache.clear(ctx)
+      resolveFetch({ percentage: 50 })
+      await updatePromise
+
+      // A subsequent updateStatus must re-fetch: the cleared fetch never set
+      // lastData, and clear() also nulled it.
+      ;(ctx.ui.setStatus as any).mockClear()
+      await cache.updateStatus(ctx)
+      expect(fetchFn).toHaveBeenCalledTimes(2)
+      expect(ctx.ui.setStatus).toHaveBeenCalledWith("test-usage", "muted:Test:accent:50%")
+    })
+
+    it("should not paint an error from a fetch that resolved after clear()", async () => {
+      const ctx = createMockContext()
+      let rejectFetch: (e: unknown) => void = () => {}
+      const fetchPromise = new Promise<TestData>((_, reject) => {
+        rejectFetch = reject
+      })
+      const fetchFn = mock(() => fetchPromise)
+      const cache = createCache(fetchFn)
+
+      const updatePromise = cache.updateStatus(ctx)
+      await Promise.resolve()
+
+      cache.clear(ctx)
+      ;(ctx.ui.setStatus as any).mockClear()
+
+      rejectFetch(new UsageError("API error", "http500"))
+      await updatePromise
+
+      expect(ctx.ui.setStatus).not.toHaveBeenCalled()
+    })
   })
 
   describe("theme integration", () => {
