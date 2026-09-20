@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.10] - 2026-09-20
+
+### Changed
+
+- **deps-dev**: update dependencies (#26)
+- **deps-dev**: update dependencies (#27)
+- **deps-dev**: update dependencies (#28)
+- **deps**: update dependencies, Pi sdk to v0.86.0 (#29)
+
 ## [0.2.9] - 2026-09-07
 
 ### Changed
@@ -110,6 +119,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - un-pin dependencies, bump deps
 
+[0.2.10]: https://github.com/shaftoe/pi-usage-lib/compare/v0.2.9...v0.2.10
 [0.2.9]: https://github.com/shaftoe/pi-usage-lib/compare/v0.2.8...v0.2.9
 [0.2.8]: https://github.com/shaftoe/pi-usage-lib/compare/v0.2.7...v0.2.8
 [0.2.7]: https://github.com/shaftoe/pi-usage-lib/compare/v0.2.6...v0.2.7
