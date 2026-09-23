@@ -8,7 +8,7 @@
         "temporal-polyfill": "^1.0.5",
       },
       "devDependencies": {
-        "@alexanderfortin/semantic-release-keep-a-changelog": "^0.4.13",
+        "@alexanderfortin/semantic-release-keep-a-changelog": "^0.4.14",
         "@biomejs/biome": "^2.5.14",
         "@semantic-release/commit-analyzer": "^13.0.1",
         "@semantic-release/exec": "^7.1.0",
@@ -20,8 +20,8 @@
         "typescript": "^7.0.2",
       },
       "peerDependencies": {
-        "@earendil-works/pi-coding-agent": "^0.87.0",
-        "@earendil-works/pi-tui": "^0.87.0",
+        "@earendil-works/pi-coding-agent": "^0.87.1",
+        "@earendil-works/pi-tui": "^0.87.1",
       },
     },
   },
@@ -34,7 +34,7 @@
 
     "@actions/io": ["@actions/io@3.0.2", "", {}, "sha512-nRBchcMM+QK1pdjO7/idu86rbJI5YHUKCvKs0KxnSYbVe3F51UfGxuZX4Qy/fWlp6l7gWFwIkrOzN+oUK03kfw=="],
 
-    "@alexanderfortin/semantic-release-keep-a-changelog": ["@alexanderfortin/semantic-release-keep-a-changelog@0.4.13", "", { "dependencies": { "@semantic-release/error": "^4.0.0", "conventional-changelog-writer": "^9.2.1", "conventional-commits-filter": "^6.0.1", "conventional-commits-parser": "^7.1.2", "get-stream": "9.0.1", "into-stream": "^9.1.0", "temporal-polyfill": "^1.0.4" }, "peerDependencies": { "semantic-release": ">=24.0.0" } }, "sha512-evMzyfii8vC5iq1G7r67g//NJ2+iJ0/S2e+tc5UtzHKAFKOSfzHn1wa/lxf1cf7BijYHkuP7XvukZ4wcZtotVQ=="],
+    "@alexanderfortin/semantic-release-keep-a-changelog": ["@alexanderfortin/semantic-release-keep-a-changelog@0.4.14", "", { "dependencies": { "@semantic-release/error": "^4.0.0", "conventional-changelog-writer": "^9.2.1", "conventional-commits-filter": "^6.0.1", "conventional-commits-parser": "^7.1.2", "get-stream": "9.0.1", "into-stream": "^9.1.0", "temporal-polyfill": "^1.0.5" }, "peerDependencies": { "semantic-release": ">=24.0.0" } }, "sha512-TKzLJXC2vcdnG3RImvIJVVWEDO8aIa9vFBGE+Q+etpXGft4HlROmuGcXIt0TWM/547Nr5WeFPqI4Sp4cLPWzKw=="],
 
     "@anthropic-ai/sdk": ["@anthropic-ai/sdk@0.91.1", "", { "dependencies": { "json-schema-to-ts": "^3.1.1" }, "peerDependencies": { "zod": "^3.25.0 || ^4.0.0" }, "optionalPeers": ["zod"], "bin": { "anthropic-ai-sdk": "bin/cli" } }, "sha512-LAmu761tSN9r66ixvmciswUj/ZC+1Q4iAfpedTfSVLeswRwnY3n2Nb6Tsk+cLPP28aLOPWeMgIuTuCcMC6W/iw=="],
 
