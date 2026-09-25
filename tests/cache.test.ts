@@ -4,9 +4,9 @@
 
 import type { ExtensionContext } from "@earendil-works/pi-coding-agent"
 import { describe, expect, it, vi } from "vitest"
-import { UsageError } from "../src/api"
-import { UsageCache } from "../src/cache"
-import type { RenderErrorFn, RenderStatusFn, Theme } from "../src/types"
+import { UsageError } from "../src/api.js"
+import { UsageCache } from "../src/cache.js"
+import type { RenderErrorFn, RenderStatusFn, Theme } from "../src/types.js"
 
 // --- Helpers ---
 

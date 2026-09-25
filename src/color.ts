@@ -10,8 +10,8 @@
  * thresholds per-call to override at render time.
  */
 
-import { loadColorThresholds } from "./config"
-import type { ColorThresholds, Theme } from "./types"
+import { loadColorThresholds } from "./config.js"
+import type { ColorThresholds, Theme } from "./types.js"
 
 /**
  * Get the appropriate TUI color function for a percentage-based usage value.
@@ -70,4 +70,4 @@ export function colorForCredit(
 }
 
 /** Default color thresholds — re-exported for convenience. */
-export { DEFAULT_COLOR_THRESHOLDS } from "./config"
+export { DEFAULT_COLOR_THRESHOLDS } from "./config.js"

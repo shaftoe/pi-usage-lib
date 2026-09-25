@@ -5,8 +5,8 @@
  */
 
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent"
-import { UsageCache } from "./cache"
-import type { UsageExtensionConfig } from "./types"
+import { UsageCache } from "./cache.js"
+import type { UsageExtensionConfig } from "./types.js"
 
 /** Check if a provider name matches the given prefix (case-insensitive) */
 function isProviderMatch(provider: string | undefined, prefix: string): boolean {

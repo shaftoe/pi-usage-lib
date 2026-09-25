@@ -4,11 +4,11 @@
  */
 
 // API utilities
-export { buildAuthHeaders, safeFetch, safeParseJson, UsageError } from "./api"
+export { buildAuthHeaders, safeFetch, safeParseJson, UsageError } from "./api.js"
 // Cache class (for advanced use)
-export { UsageCache } from "./cache"
+export { UsageCache } from "./cache.js"
 // Color threshold helpers
-export { colorForCredit, colorForPercentage } from "./color"
+export { colorForCredit, colorForPercentage } from "./color.js"
 // Config (user settings / threshold overrides)
 export {
   DEFAULT_COLOR_THRESHOLDS,
@@ -16,9 +16,9 @@ export {
   loadColorThresholds,
   mergeThresholds,
   resetThresholdsCache,
-} from "./config"
+} from "./config.js"
 // Factory function
-export { createUsageExtension } from "./extension"
+export { createUsageExtension } from "./extension.js"
 
 // Types
 export type {
@@ -28,4 +28,4 @@ export type {
   RenderStatusFn,
   Theme,
   UsageExtensionConfig,
-} from "./types"
+} from "./types.js"

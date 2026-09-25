@@ -10,8 +10,8 @@ import {
   loadColorThresholds,
   mergeThresholds,
   resetThresholdsCache,
-} from "../src/config"
-import type { ColorThresholds } from "../src/types"
+} from "../src/config.js"
+import type { ColorThresholds } from "../src/types.js"
 
 vi.mock("node:fs")
 

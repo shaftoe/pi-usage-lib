@@ -3,7 +3,7 @@
  */
 
 import { afterEach, describe, expect, it } from "vitest"
-import { buildAuthHeaders, safeFetch, safeParseJson, UsageError } from "../src/api"
+import { buildAuthHeaders, safeFetch, safeParseJson, UsageError } from "../src/api.js"
 
 // --- Helpers ---
 

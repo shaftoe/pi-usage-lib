@@ -12,7 +12,7 @@
 import { readFileSync } from "node:fs"
 import { homedir } from "node:os"
 import { join } from "node:path"
-import type { ColorThresholds } from "./types"
+import type { ColorThresholds } from "./types.js"
 
 /** Default color thresholds used when no user overrides are present. */
 export const DEFAULT_COLOR_THRESHOLDS: ColorThresholds = {

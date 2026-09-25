@@ -4,7 +4,7 @@
 
 import { Temporal } from "temporal-polyfill"
 import { describe, expect, it } from "vitest"
-import { formatInstantFromEpochMs, formatTimeRemainingFromEpochMs } from "../src/datetime"
+import { formatInstantFromEpochMs, formatTimeRemainingFromEpochMs } from "../src/datetime.js"
 
 describe("formatInstantFromEpochMs", () => {
   it("should format an instant as a localized date/time string", () => {

@@ -4,9 +4,9 @@
 
 import { readFileSync } from "node:fs"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
-import { colorForCredit, colorForPercentage } from "../src/color"
-import { resetThresholdsCache } from "../src/config"
-import type { ColorThresholds, Theme } from "../src/types"
+import { colorForCredit, colorForPercentage } from "../src/color.js"
+import { resetThresholdsCache } from "../src/config.js"
+import type { ColorThresholds, Theme } from "../src/types.js"
 
 // Isolate tests from any real ~/.pi/agent/usage-lib.json on the host
 vi.mock("node:fs", async (importOriginal) => {

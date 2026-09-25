@@ -4,8 +4,8 @@
 
 import type { ExtensionContext } from "@earendil-works/pi-coding-agent"
 import { Temporal } from "temporal-polyfill"
-import { UsageError } from "./api"
-import type { FetchUsageFn, RenderErrorFn, RenderStatusFn, Theme } from "./types"
+import { UsageError } from "./api.js"
+import type { FetchUsageFn, RenderErrorFn, RenderStatusFn, Theme } from "./types.js"
 
 /** Build the default error renderer for a given label */
 function defaultRenderError(label: string): RenderErrorFn {
