@@ -2,8 +2,8 @@
  * Unit tests for datetime.ts
  */
 
-import { describe, expect, it } from "bun:test"
 import { Temporal } from "temporal-polyfill"
+import { describe, expect, it } from "vitest"
 import { formatInstantFromEpochMs, formatTimeRemainingFromEpochMs } from "../src/datetime"
 
 describe("formatInstantFromEpochMs", () => {

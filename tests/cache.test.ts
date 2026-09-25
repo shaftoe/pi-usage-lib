@@ -2,8 +2,8 @@
  * Unit tests for cache.ts
  */
 
-import { describe, expect, it, mock } from "bun:test"
 import type { ExtensionContext } from "@earendil-works/pi-coding-agent"
+import { describe, expect, it, vi } from "vitest"
 import { UsageError } from "../src/api"
 import { UsageCache } from "../src/cache"
 import type { RenderErrorFn, RenderStatusFn, Theme } from "../src/types"
@@ -16,13 +16,13 @@ interface TestData {
 
 function createMockContext(overrides: Partial<ExtensionContext> = {}): ExtensionContext & {
   ui: {
-    setStatus: ReturnType<typeof mock>
+    setStatus: ReturnType<typeof vi.fn>
     theme: Theme
   }
 } {
   return {
     ui: {
-      setStatus: mock(() => {}),
+      setStatus: vi.fn(() => {}),
       theme: {
         fg: (color: string, text: string) => `${color}:${text}`,
       },
@@ -38,11 +38,11 @@ const defaultRenderStatus: RenderStatusFn<TestData> = (data, theme) =>
   theme.fg("muted", "Test:") + theme.fg("accent", `${data.percentage}%`)
 
 function createMockFetch(data: TestData) {
-  return mock(() => Promise.resolve(data))
+  return vi.fn(() => Promise.resolve(data))
 }
 
 function createThrowingFetch(error: unknown) {
-  return mock(() => Promise.reject(error))
+  return vi.fn(() => Promise.reject(error))
 }
 
 function createCache(
@@ -183,7 +183,7 @@ describe("UsageCache", () => {
       const ctx = createMockContext()
       const fetchFn = createThrowingFetch(new Error("fail"))
       const cache = createCache(fetchFn)
-      const mockConsoleError = mock(() => {})
+      const mockConsoleError = vi.fn(() => {})
       const original = console.error
       console.error = mockConsoleError
 
@@ -254,7 +254,7 @@ describe("UsageCache", () => {
       const fetchPromise = new Promise<TestData>((r) => {
         resolveFetch = r
       })
-      const fetchFn = mock(() => fetchPromise)
+      const fetchFn = vi.fn(() => fetchPromise)
       const cache = createCache(fetchFn)
 
       // Start an updateStatus that awaits the fetch.
@@ -282,7 +282,7 @@ describe("UsageCache", () => {
       const fetchPromise = new Promise<TestData>((r) => {
         resolveFetch = r
       })
-      const fetchFn = mock(() => fetchPromise)
+      const fetchFn = vi.fn(() => fetchPromise)
       const cache = createCache(fetchFn)
 
       const updatePromise = cache.updateStatus(ctx)
@@ -307,7 +307,7 @@ describe("UsageCache", () => {
       const fetchPromise = new Promise<TestData>((_, reject) => {
         rejectFetch = reject
       })
-      const fetchFn = mock(() => fetchPromise)
+      const fetchFn = vi.fn(() => fetchPromise)
       const cache = createCache(fetchFn)
 
       const updatePromise = cache.updateStatus(ctx)
@@ -330,7 +330,7 @@ describe("UsageCache", () => {
       }
       const ctx = createMockContext({
         ui: {
-          setStatus: mock(() => {}),
+          setStatus: vi.fn(() => {}),
           theme: customTheme,
         },
       } as any)

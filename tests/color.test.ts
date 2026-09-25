@@ -2,10 +2,17 @@
  * Unit tests for color.ts — colorForPercentage and colorForCredit
  */
 
-import { afterEach, beforeEach, describe, expect, it } from "bun:test"
+import { readFileSync } from "node:fs"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { colorForCredit, colorForPercentage } from "../src/color"
 import { resetThresholdsCache } from "../src/config"
 import type { ColorThresholds, Theme } from "../src/types"
+
+// Isolate tests from any real ~/.pi/agent/usage-lib.json on the host
+vi.mock("node:fs", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("node:fs")>()
+  return { ...actual, readFileSync: Object.assign(vi.fn(), actual.readFileSync) }
+})
 
 // --- Helpers ---
 
@@ -16,6 +23,11 @@ const mockTheme: Theme = {
 
 beforeEach(() => {
   resetThresholdsCache()
+  vi.mocked(readFileSync).mockImplementation(() => {
+    const err = new Error("ENOENT") as NodeJS.ErrnoException
+    err.code = "ENOENT"
+    throw err
+  })
 })
 
 afterEach(() => {

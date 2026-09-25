@@ -14,7 +14,7 @@ It absorbs all the boilerplate that most `*-usage` extension needs — Pi event 
 ## Install
 
 ```bash
-bun add @alexanderfortin/pi-usage-lib
+pnpm add @alexanderfortin/pi-usage-lib
 ```
 
 ## Quick Start

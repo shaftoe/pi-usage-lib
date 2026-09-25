@@ -2,8 +2,8 @@
  * Unit tests for config.ts — user settings & threshold loading
  */
 
-import { afterEach, beforeEach, describe, expect, it, mock, spyOn } from "bun:test"
-import * as fs from "node:fs"
+import { readFileSync } from "node:fs"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import {
   DEFAULT_COLOR_THRESHOLDS,
   getSettingsFilePath,
@@ -13,13 +13,15 @@ import {
 } from "../src/config"
 import type { ColorThresholds } from "../src/types"
 
+vi.mock("node:fs")
+
 beforeEach(() => {
   resetThresholdsCache()
 })
 
 afterEach(() => {
   resetThresholdsCache()
-  mock.restore()
+  vi.restoreAllMocks()
 })
 
 describe("DEFAULT_COLOR_THRESHOLDS", () => {
@@ -134,7 +136,7 @@ describe("loadColorThresholds — caching", () => {
 
 describe("loadColorThresholds — file loading", () => {
   it("should use defaults when settings file is missing", () => {
-    const readSpy = spyOn(fs, "readFileSync").mockImplementation(() => {
+    const readSpy = vi.mocked(readFileSync).mockImplementation(() => {
       const err = new Error("ENOENT") as NodeJS.ErrnoException
       err.code = "ENOENT"
       throw err
@@ -146,7 +148,7 @@ describe("loadColorThresholds — file loading", () => {
   })
 
   it("should use defaults when settings file has invalid JSON", () => {
-    const readSpy = spyOn(fs, "readFileSync").mockReturnValue("{ this is not valid json")
+    const readSpy = vi.mocked(readFileSync).mockReturnValue("{ this is not valid json")
 
     const result = loadColorThresholds()
     expect(result).toEqual(DEFAULT_COLOR_THRESHOLDS)
@@ -160,7 +162,7 @@ describe("loadColorThresholds — file loading", () => {
         credit: { warning: 8, critical: 2 },
       },
     })
-    const readSpy = spyOn(fs, "readFileSync").mockReturnValue(settingsFileContent)
+    const readSpy = vi.mocked(readFileSync).mockReturnValue(settingsFileContent)
 
     const result = loadColorThresholds()
     expect(result).toEqual({
@@ -176,7 +178,7 @@ describe("loadColorThresholds — file loading", () => {
         percentage: { warning: 75 },
       },
     })
-    const readSpy = spyOn(fs, "readFileSync").mockReturnValue(settingsFileContent)
+    const readSpy = vi.mocked(readFileSync).mockReturnValue(settingsFileContent)
 
     const result = loadColorThresholds()
     expect(result.percentage).toEqual({ warning: 75, critical: 90 })
@@ -186,7 +188,7 @@ describe("loadColorThresholds — file loading", () => {
 
   it("should handle file without thresholds key", () => {
     const settingsFileContent = JSON.stringify({ someOtherKey: true })
-    const readSpy = spyOn(fs, "readFileSync").mockReturnValue(settingsFileContent)
+    const readSpy = vi.mocked(readFileSync).mockReturnValue(settingsFileContent)
 
     const result = loadColorThresholds()
     expect(result).toEqual(DEFAULT_COLOR_THRESHOLDS)
@@ -200,7 +202,7 @@ describe("loadColorThresholds — file loading", () => {
         credit: { critical: Infinity },
       },
     })
-    const readSpy = spyOn(fs, "readFileSync").mockReturnValue(settingsFileContent)
+    const readSpy = vi.mocked(readFileSync).mockReturnValue(settingsFileContent)
 
     const result = loadColorThresholds()
     expect(result.percentage.warning).toBe(80) // default preserved

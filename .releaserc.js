@@ -26,7 +26,7 @@ export default {
     [
       "@semantic-release/exec",
       {
-        prepareCmd: "bun run lint:fix",
+        prepareCmd: "pnpm run lint:fix",
       },
     ],
     [

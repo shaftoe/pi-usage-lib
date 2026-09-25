@@ -2,7 +2,7 @@
  * Unit tests for api.ts
  */
 
-import { afterEach, describe, expect, it } from "bun:test"
+import { afterEach, describe, expect, it } from "vitest"
 import { buildAuthHeaders, safeFetch, safeParseJson, UsageError } from "../src/api"
 
 // --- Helpers ---

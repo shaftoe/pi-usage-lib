@@ -2,8 +2,8 @@
  * Unit tests for extension.ts — createUsageExtension factory
  */
 
-import { describe, expect, it, mock } from "bun:test"
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent"
+import { describe, expect, it, vi } from "vitest"
 import { UsageError } from "../src/api"
 import { createUsageExtension } from "../src/extension"
 import type { RenderStatusFn } from "../src/types"
@@ -27,7 +27,7 @@ function createMockPi(): ExtensionAPI & {
   const handlers: Record<string, (...args: any[]) => Promise<void>> = {}
 
   const pi = {
-    on: mock((event: string, handler: (...args: any[]) => Promise<void>) => {
+    on: vi.fn((event: string, handler: (...args: any[]) => Promise<void>) => {
       handlers[event] = handler
     }),
     handlers,
@@ -50,7 +50,7 @@ function createMockCtx(provider?: string) {
       theme: {
         fg: (style: string, text: string) => `${style}:${text}`,
       },
-      setStatus: mock(() => {}),
+      setStatus: vi.fn(() => {}),
     },
   } as any as ExtensionContext
 }
@@ -311,7 +311,7 @@ describe("createUsageExtension", () => {
       const fetchPromise = new Promise<TestData>((r) => {
         resolveFetch = r
       })
-      const fetchUsage = mock(() => fetchPromise)
+      const fetchUsage = vi.fn(() => fetchPromise)
       const extension = createUsageExtension<TestData>({
         providerPrefix: "testsvc",
         statusKey: "testsvc-usage",
@@ -345,7 +345,7 @@ describe("createUsageExtension", () => {
       const fetchPromise = new Promise<TestData>((r) => {
         resolveFetch = r
       })
-      const fetchUsage = mock(() => fetchPromise)
+      const fetchUsage = vi.fn(() => fetchPromise)
       const extension = createUsageExtension<TestData>({
         providerPrefix: "testsvc",
         statusKey: "testsvc-usage",
