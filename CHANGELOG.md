@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-09-25
+
+### Added
+
+- replace Bun with PNPM
+
 ## [0.2.13] - 2026-09-23
 
 ### Changed
@@ -137,6 +143,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - un-pin dependencies, bump deps
 
+[0.3.0]: https://github.com/shaftoe/pi-usage-lib/compare/v0.2.13...v0.3.0
 [0.2.13]: https://github.com/shaftoe/pi-usage-lib/compare/v0.2.12...v0.2.13
 [0.2.12]: https://github.com/shaftoe/pi-usage-lib/compare/v0.2.11...v0.2.12
 [0.2.11]: https://github.com/shaftoe/pi-usage-lib/compare/v0.2.10...v0.2.11
