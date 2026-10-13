@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.2] - 2026-10-13
+
+### Changed
+
+- **deps**: bump deps, Pi to v1.2.0
+- **deps-dev**: update dependency @alexanderfortin/semantic-release-keep-a-changelog to ^0.5.0 (#37)
+- **deps-dev**: update node.js to >=24.21.0 (#40)
+- **deps-dev**: update pnpm to v12.11.2 (#41)
+- **deps-dev**: update vitest monorepo to ^4.1.11 (#36)
+
 ## [0.3.1] - 2026-09-25
 
 ### Fixed
@@ -149,6 +159,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - un-pin dependencies, bump deps
 
+[0.3.2]: https://github.com/shaftoe/pi-usage-lib/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/shaftoe/pi-usage-lib/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/shaftoe/pi-usage-lib/compare/v0.2.13...v0.3.0
 [0.2.13]: https://github.com/shaftoe/pi-usage-lib/compare/v0.2.12...v0.2.13
