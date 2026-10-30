@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.4] - 2026-10-30
+
+### Changed
+
+- **deps-ci**: bump cycjimmy/semantic-release-action from 6 to 8 (#52)
+- **deps**: bump deps, Pi to v1.4.0
+- **deps-dev**: update node.js to >=24.22.0 (#47)
+- **deps-dev**: update node.js to v26 (#56)
+- **deps-dev**: update pnpm to v12.14.0 (#51)
+- **deps-dev**: update pnpm to v12.16.1 (#55)
+
 ## [0.3.3] - 2026-10-21
 
 ### Changed
@@ -165,6 +176,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - un-pin dependencies, bump deps
 
+[0.3.4]: https://github.com/shaftoe/pi-usage-lib/compare/v0.3.3...v0.3.4
 [0.3.3]: https://github.com/shaftoe/pi-usage-lib/compare/v0.3.2...v0.3.3
 [0.3.2]: https://github.com/shaftoe/pi-usage-lib/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/shaftoe/pi-usage-lib/compare/v0.3.0...v0.3.1
