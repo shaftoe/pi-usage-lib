@@ -47,7 +47,7 @@
     "vitest": "^4.1.12"
   },
   "peerDependencies": {
-    "@earendil-works/pi-coding-agent": "^1.2.0",
+    "@earendil-works/pi-coding-agent": "^1.5.2",
     "@earendil-works/pi-tui": "^1.2.0"
   },
   "packageManager": "pnpm@12.18.0",
